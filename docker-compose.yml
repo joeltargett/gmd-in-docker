@@ -1,0 +1,26 @@
+version: '3.9'
+
+services:
+  app:
+    build:
+      context: ./.docker/deb
+      target: gmd
+    depends_on:
+      - influxdb
+    restart: unless-stopped
+    volumes:
+      - ./data/configs:/var/lib/gmd:rw
+      - ./data/logs:/var/log/gmd:rw
+    networks:
+      - backend
+
+  influxdb:
+    image: influxdb:1.8
+    restart: unless-stopped
+    volumes:
+      - ./data/influxdb:/var/lib/influxdb:rw
+    networks:
+      - backend
+
+networks:
+  backend:

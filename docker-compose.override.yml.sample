@@ -1,0 +1,24 @@
+version: '3.9'
+
+services:
+  app:
+    environment:
+      # gmd admin user
+      - ADMIN_USER=admin
+      # gmd admin user
+      - ADMIN_PASSWORD=12345
+      # InfluxDB (logs and metrics) *EXTERNAL* URL (i.e. available to the servers and Galera Manager UI via Browser, e.g. public IP of your server)
+      # Note: when running locally, you may want set it to 127.0.0.1. but this way the servers will not be able
+      # to send the metrics and logs
+      - INFLUXDB_URL=http://gmd:12345@1.2.3.4:8086
+    ports:
+      - "8080:8080"
+
+  influxdb:
+    environment:
+      - INFLUXDB_HTTP_AUTH_ENABLED=true
+      - INFLUXDB_ADMIN_USER=gmd
+      - INFLUXDB_ADMIN_PASSWORD=12345
+      - INFLUXDB_DB=gmd
+    ports:
+      - "8086:8086"
